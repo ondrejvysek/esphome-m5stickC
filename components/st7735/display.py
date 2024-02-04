@@ -10,7 +10,7 @@ from . import st7735_ns
 
 DEPENDENCIES = ['spi']
 
-ST7735 = st7735_ns.class_('ST7735', cg.PollingComponent, spi.SPIDevice, display.DisplayBuffer)
+ST7735 = st7735_ns.class_('ST7735', cg.PollingComponent, spi.SPIDevice, display.Display)
 ST7735Ref = ST7735.operator('ref')
 
 CONFIG_SCHEMA = display.FULL_DISPLAY_SCHEMA.extend({
@@ -35,7 +35,7 @@ def to_code(config):
 
     if CONF_LAMBDA in config:
         lambda_ = yield cg.process_lambda(
-            config[CONF_LAMBDA], [(display.DisplayBufferRef, 'it')], return_type=cg.void)
+            config[CONF_LAMBDA], [(display.DisplayBuffer, 'it')], return_type=cg.void)
         cg.add(var.set_writer(lambda_))
 
     yield display.register_display(var, config)
